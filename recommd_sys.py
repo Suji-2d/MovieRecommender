@@ -18,19 +18,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 k_drama_df= pd.read_csv("D:\Developement\DS-projects\k-drama RS\data\koreanTV.csv")
-k_drama_df.head()
+#k_drama_df.head()
 
 
 # In[63]:
 
 
-k_drama_df.info()
+#k_drama_df.info()
 
 
 # In[64]:
 
 
-k_drama_df.isna().sum()
+#k_drama_df.isna().sum()
 
 
 # In[65]:
@@ -38,7 +38,7 @@ k_drama_df.isna().sum()
 
 k_df=k_drama_df
 newShortStory = k_df['Short Story']
-newShortStory.head()
+#newShortStory.head()
 
 
 # In[66]:
@@ -71,7 +71,7 @@ k_df['Modified Short Story'] = newShortStory
 # In[113]:
 
 
-k_df.head()
+#k_df.head()
 
 
 # In[70]:
@@ -125,6 +125,7 @@ similarity = cosine_similarity(vect_mat)
 
 #get input for recommondation
 def genre_recomm(input_title):
+    movieList=[]
     if(input_title.lower() not in k_df['Title_low'].values):
         return 'The k-drama you like is not in the data base try another name'
     
@@ -133,39 +134,15 @@ def genre_recomm(input_title):
     # Calculate similarity
     distances = similarity[series_index]
     series_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:11]
-    print('You may also like:')
-    print(("Name"+'\t'+"Rating").expandtabs(30))
+    #print('You may also like:')
+    #print(("Name"+'\t'+"Rating").expandtabs(30))
     # For all the similar series, print their name
-    for i in series_list:        
-        print((k_df.iloc[i[0]]["Title"] + '\t' + k_df.iloc[i[0]]["Rating"]).expandtabs(30))
+    for i in series_list:      
+        movieList.append(k_df.iloc[i[0]]["Title"])  
+        #print((k_df.iloc[i[0]]["Title"] + '\t' + k_df.iloc[i[0]]["Rating"]).expandtabs(30))
+        print(i)
         
-    return 'Enjoy watching'
+    return movieList
 
-
-# In[136]:
-
-
-genre_recomm('my name')
-
-
-# In[143]:
-
-
-
-k_name=input('Enter the K-drama name you like:\n')
-print('*'*10)
-genre_recomm(k_name)
-    
-
-
-# In[124]:
-
-
-k_df['Title']
-
-
-# In[ ]:
-
-
-
-
+def getAllTitlesAvailable():
+    return k_df['Title'].values
